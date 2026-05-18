@@ -4,15 +4,8 @@ const STORAGE_KEY = "book-inventory:v1";
 const HISTORY_LIMIT = 80;
 const LOW_STOCK_LIMIT = 2;
 const DUPLICATE_SCAN_GAP_MS = 1800;
-const APP_VERSION = "20260518c";
-const KNOWN_BOOKS = {
-  9787040560039: {
-    title: "数学史概论（第四版）",
-    authors: "李文林",
-    publisher: "高等教育出版社",
-    source: "本地中文书目",
-  },
-};
+const APP_VERSION = "20260518d";
+const JINA_READER_PREFIX = "https://r.jina.ai/http://r.jina.ai/http://";
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => Array.from(document.querySelectorAll(selector));
@@ -390,6 +383,67 @@ function namedList(items) {
     .join("、");
 }
 
+function readerUrl(targetUrl) {
+  return `${JINA_READER_PREFIX}${targetUrl}`;
+}
+
+function markdownLines(markdown) {
+  return String(markdown || "")
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean);
+}
+
+function cleanMarkdownText(value) {
+  return String(value || "")
+    .replace(/!\[[^\]]*]\([^)]*\)/g, " ")
+    .replace(/\[([^\]]+)]\([^)]*\)/g, "$1")
+    .replace(/\*\*([^*]+)\*\*/g, "$1")
+    .replace(/[`*_>#]+/g, " ")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function cleanBookTitle(value, isbn = "") {
+  return cleanMarkdownText(value)
+    .replace(new RegExp(`\\b${isbn}\\b`, "g"), "")
+    .replace(/^Title:\s*ISBN\s*\d{10,13}\s*-\s*/i, "")
+    .replace(/\s+-\s*读书\s+-\s*豆瓣搜索$/i, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function markdownLinkText(line, urlPattern) {
+  const linkRegex = /(!?)\[([^\]]+)]\((https?:\/\/[^)\s]+)(?:\s+"[^"]*")?\)/g;
+  let match = linkRegex.exec(line);
+  while (match) {
+    const [, imageMark, text, url] = match;
+    if (!imageMark && urlPattern.test(url)) {
+      return cleanMarkdownText(text);
+    }
+    match = linkRegex.exec(line);
+  }
+  return "";
+}
+
+function extractCleanField(lines, label) {
+  const prefix = `${label}:`;
+  const line = lines.map(cleanMarkdownText).find((item) => item.toLowerCase().startsWith(prefix.toLowerCase()));
+  return line ? line.slice(prefix.length).trim() : "";
+}
+
+function looksLikePublisher(value) {
+  return /出版社|出版公司|书局|书店|Press|Publishing|Publisher|社$/i.test(value);
+}
+
+function splitCreditLine(value) {
+  return cleanMarkdownText(value)
+    .split(/\s*\/\s*/)
+    .map((part) => part.trim())
+    .filter(Boolean);
+}
+
 function normalizeOpenLibraryBook(data, isbn) {
   const entry = data?.[`ISBN:${isbn}`];
   if (!entry?.title) return null;
@@ -426,27 +480,74 @@ function normalizeOpenBdBook(data, isbn) {
   };
 }
 
-function normalizeKnownBook(book, isbn) {
-  if (!book?.title) return null;
+function normalizeDoubanBook(markdown, isbn) {
+  const lines = markdownLines(markdown);
+  const titleIndex = lines.findIndex((line) =>
+    markdownLinkText(line, /^https:\/\/book\.douban\.com\/subject\/\d+\/?$/),
+  );
+  if (titleIndex < 0) return null;
+
+  const title = cleanBookTitle(markdownLinkText(lines[titleIndex], /^https:\/\/book\.douban\.com\/subject\/\d+\/?$/), isbn);
+  if (!title || title.includes("添加书籍")) return null;
+
+  const metaLine = lines
+    .slice(titleIndex + 1, titleIndex + 8)
+    .map(cleanMarkdownText)
+    .find((line) => line.includes(" / ") && !line.includes("添加豆瓣没有的图书"));
+  const parts = splitCreditLine(metaLine || "");
+  const publisherIndex = parts.findIndex(looksLikePublisher);
+  const publisher = publisherIndex >= 0 ? parts[publisherIndex] : parts[1] || "";
+  const authors = publisherIndex > 0 ? parts.slice(0, publisherIndex).join("、") : parts[0] || "";
+
   return {
     isbn,
-    title: book.title,
-    authors: book.authors || "",
-    publisher: book.publisher || "",
-    source: book.source || "本地书目",
+    title,
+    authors,
+    publisher,
+    source: "豆瓣读书",
   };
 }
 
-function normalizeHepSearchBook(markdown, isbn) {
-  const lines = String(markdown || "")
-    .split("\n")
-    .map((line) => line.trim())
-    .filter(Boolean);
-  const titleLine = lines.find((line) => /^### \[.+\]\(https:\/\/xuanshu\.hep\.com\.cn\/front\/book\/findBookDetails\?bookId=/.test(line));
-  if (!titleLine) return null;
+async function lookupDoubanBook(isbn) {
+  const target = `https://search.douban.com/book/subject_search?search_text=${encodeURIComponent(isbn)}&cat=1001`;
+  const markdown = await fetchText(readerUrl(target), 12000);
+  return normalizeDoubanBook(markdown, isbn);
+}
 
-  const title = titleLine.match(/^### \[(.+?)\]/)?.[1]?.trim();
-  const titleIndex = lines.indexOf(titleLine);
+function normalizeIsbnSearchBook(markdown, isbn) {
+  const lines = markdownLines(markdown);
+  if (!lines.some((line) => line.includes(isbn))) return null;
+
+  const headingLine = lines.find((line) => /^##\s+/.test(line) && !/Best Prices|Compare|ISBN Search/i.test(line));
+  const docTitleLine = lines.find((line) => /^Title:\s*ISBN\s+\d{10,13}\s+-\s+/i.test(line));
+  const title = cleanBookTitle(headingLine ? headingLine.replace(/^##\s+/, "") : docTitleLine || "", isbn);
+  if (!title) return null;
+
+  return {
+    isbn,
+    title,
+    authors: extractCleanField(lines, "Author"),
+    publisher: extractCleanField(lines, "Publisher"),
+    source: "ISBN Search",
+  };
+}
+
+async function lookupIsbnSearchBook(isbn) {
+  const markdown = await fetchText(readerUrl(`https://www.isbnsearch.org/isbn/${encodeURIComponent(isbn)}`), 12000);
+  return normalizeIsbnSearchBook(markdown, isbn);
+}
+
+function normalizeHepSearchBook(markdown, isbn) {
+  const lines = markdownLines(markdown);
+  const titleIndex = lines.findIndex((line) =>
+    markdownLinkText(line, /^https:\/\/xuanshu\.hep\.com\.cn\/front\/book\/findBookDetails\?bookId=/),
+  );
+  if (titleIndex < 0) return null;
+
+  const title = cleanBookTitle(
+    markdownLinkText(lines[titleIndex], /^https:\/\/xuanshu\.hep\.com\.cn\/front\/book\/findBookDetails\?bookId=/),
+    isbn,
+  );
   const authors = lines
     .slice(titleIndex + 1, titleIndex + 5)
     .find((line) => line.startsWith("#### "))
@@ -464,21 +565,82 @@ function normalizeHepSearchBook(markdown, isbn) {
 }
 
 async function lookupHepBook(isbn) {
-  const formatted = encodeURIComponent(formatIsbn13(isbn));
-  const target = `https://xuanshu.hep.com.cn/front/book/bookSearch?wd=${formatted}&searchType=book`;
-  const markdown = await fetchText(`https://r.jina.ai/http://r.jina.ai/http://${target}`, 12000);
-  return normalizeHepSearchBook(markdown, isbn);
+  const queries = Array.from(new Set([formatIsbn13(isbn), isbn].filter(Boolean)));
+  for (const query of queries) {
+    try {
+      const target = `https://xuanshu.hep.com.cn/front/book/bookSearch?wd=${encodeURIComponent(query)}&searchType=book`;
+      const markdown = await fetchText(readerUrl(target), 12000);
+      const found = normalizeHepSearchBook(markdown, isbn);
+      if (found?.title) return found;
+    } catch {
+      // Try the next ISBN spelling; the site accepts both hyphenated and plain ISBNs inconsistently.
+    }
+  }
+  return null;
+}
+
+function cleanDangdangTitle(value, isbn) {
+  return cleanBookTitle(value, isbn)
+    .replace(/【[^】]*】/g, "")
+    .replace(/\s+(正版|现货|全新|速发|速开发票|优质售后|支持7天|七天无理由|团购优惠|正规发票).*$/i, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function normalizeDangdangBook(markdown, isbn) {
+  const lines = markdownLines(markdown);
+  const candidates = lines
+    .map((line, index) => ({
+      index,
+      title: markdownLinkText(line, /^https:\/\/product\.dangdang\.com\/\d+\.html/),
+    }))
+    .filter((candidate) => candidate.title)
+    .map((candidate) => {
+      const title = cleanDangdangTitle(candidate.title, isbn);
+      const score =
+        (candidate.title.includes(isbn) ? 8 : 0) +
+        (/（.+版）|\(.+版\)|第.+版/.test(candidate.title) ? 3 : 0) +
+        (candidate.title.length <= 60 ? 2 : 0) -
+        (/专营店|旗舰店|售后|发票|团购|包邮/.test(candidate.title) ? 4 : 0);
+      return { ...candidate, title, score };
+    })
+    .filter((candidate) => candidate.title);
+  if (!candidates.length) return null;
+
+  candidates.sort((a, b) => b.score - a.score);
+  const best = candidates[0];
+  const metaLine = lines
+    .slice(best.index + 1, best.index + 10)
+    .map(cleanMarkdownText)
+    .find((line) => line.includes("/") && line.split("/").some((part) => looksLikePublisher(part.trim())));
+  const parts = splitCreditLine(metaLine || "");
+  const publisher = parts.find(looksLikePublisher) || "";
+  const authors = parts.find((part) => part !== publisher && !/^\d{4}/.test(part) && !/不详|佚名/.test(part)) || "";
+
+  return {
+    isbn,
+    title: best.title,
+    authors,
+    publisher,
+    source: "当当公开搜索",
+  };
+}
+
+async function lookupDangdangBook(isbn) {
+  const target = `https://search.dangdang.com/?key=${encodeURIComponent(isbn)}&act=input`;
+  const markdown = await fetchText(readerUrl(target), 12000);
+  return normalizeDangdangBook(markdown, isbn);
 }
 
 async function lookupBook(isbn) {
   const cleaned = normalizeIsbn(isbn);
   const cached = state.books[cleaned];
   if (cached?.title) return cached;
-  const known = normalizeKnownBook(KNOWN_BOOKS[cleaned], cleaned);
-  if (known) return known;
 
   const lookups = [
+    async () => lookupDoubanBook(cleaned),
     async () => lookupHepBook(cleaned),
+    async () => lookupIsbnSearchBook(cleaned),
     async () => normalizeOpenBdBook(await fetchJson(`https://api.openbd.jp/v1/get?isbn=${cleaned}`), cleaned),
     async () =>
       normalizeOpenLibraryBook(
@@ -487,6 +649,7 @@ async function lookupBook(isbn) {
         ),
         cleaned,
       ),
+    async () => lookupDangdangBook(cleaned),
     async () => normalizeGoogleBook(await fetchJson(`https://www.googleapis.com/books/v1/volumes?q=isbn:${cleaned}`), cleaned),
   ];
 
@@ -554,7 +717,7 @@ async function handleDetectedCode(rawCode, reason = "扫码") {
         setStatus(`${getBookTitle(book)}：库存中暂无记录`, "success");
       } else {
         els.manualIsbn.value = isbn;
-        setStatus(`库存中没有 ${isbn}，公共 ISBN 数据库也暂未返回书名。`, "error");
+        setStatus(`库存中没有 ${isbn}，多个公开书目源也暂未返回书名。`, "error");
       }
       return;
     }
@@ -571,7 +734,7 @@ async function handleDetectedCode(rawCode, reason = "扫码") {
     if (!updated.title) {
       els.manualIsbn.value = isbn;
       els.manualTitleInput.focus({ preventScroll: true });
-      setStatus(`已记录 ${isbn}，但公共 ISBN 数据库暂未返回书名。请在“补录”里填一次书名，之后同一本会自动识别。`, "error");
+      setStatus(`已记录 ${isbn}，但多个公开书目源暂未返回书名。请在“补录”里填一次书名，之后同一本会自动识别。`, "error");
       return;
     }
 
