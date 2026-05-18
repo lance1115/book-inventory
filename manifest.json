@@ -1,0 +1,24 @@
+{
+  "name": "书库扫码库存",
+  "short_name": "书库",
+  "description": "在 iPhone Safari 本地运行的图书扫码库存管理系统",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#e8ece7",
+  "theme_color": "#173f35",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "./icons/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icons/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
