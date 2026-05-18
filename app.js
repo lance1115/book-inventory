@@ -4,6 +4,15 @@ const STORAGE_KEY = "book-inventory:v1";
 const HISTORY_LIMIT = 80;
 const LOW_STOCK_LIMIT = 2;
 const DUPLICATE_SCAN_GAP_MS = 1800;
+const APP_VERSION = "20260518c";
+const KNOWN_BOOKS = {
+  9787040560039: {
+    title: "数学史概论（第四版）",
+    authors: "李文林",
+    publisher: "高等教育出版社",
+    source: "本地中文书目",
+  },
+};
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => Array.from(document.querySelectorAll(selector));
@@ -103,6 +112,12 @@ function normalizeIsbn(value) {
   if (isValidIsbn13(cleaned)) return cleaned;
   if (isValidIsbn10(cleaned)) return isbn10To13(cleaned);
   return "";
+}
+
+function formatIsbn13(isbn) {
+  const cleaned = normalizeIsbn(isbn);
+  if (!cleaned || cleaned.length !== 13) return cleaned;
+  return `${cleaned.slice(0, 3)}-${cleaned[3]}-${cleaned.slice(4, 6)}-${cleaned.slice(6, 12)}-${cleaned[12]}`;
 }
 
 function isLikelyBookCode(code) {
@@ -324,6 +339,18 @@ async function fetchJson(url, timeout = 6500) {
   }
 }
 
+async function fetchText(url, timeout = 9000) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeout);
+  try {
+    const response = await fetch(url, { signal: controller.signal, cache: "no-store" });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    return await response.text();
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 function fetchJsonp(url, timeout = 6500) {
   return new Promise((resolve, reject) => {
     const callbackName = `__bookInventoryJsonp${Date.now()}${Math.random().toString(16).slice(2)}`;
@@ -399,13 +426,59 @@ function normalizeOpenBdBook(data, isbn) {
   };
 }
 
+function normalizeKnownBook(book, isbn) {
+  if (!book?.title) return null;
+  return {
+    isbn,
+    title: book.title,
+    authors: book.authors || "",
+    publisher: book.publisher || "",
+    source: book.source || "本地书目",
+  };
+}
+
+function normalizeHepSearchBook(markdown, isbn) {
+  const lines = String(markdown || "")
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean);
+  const titleLine = lines.find((line) => /^### \[.+\]\(https:\/\/xuanshu\.hep\.com\.cn\/front\/book\/findBookDetails\?bookId=/.test(line));
+  if (!titleLine) return null;
+
+  const title = titleLine.match(/^### \[(.+?)\]/)?.[1]?.trim();
+  const titleIndex = lines.indexOf(titleLine);
+  const authors = lines
+    .slice(titleIndex + 1, titleIndex + 5)
+    .find((line) => line.startsWith("#### "))
+    ?.replace(/^####\s*/, "")
+    .trim();
+
+  if (!title) return null;
+  return {
+    isbn,
+    title,
+    authors: authors || "",
+    publisher: "高等教育出版社",
+    source: "高教社产品信息检索系统",
+  };
+}
+
+async function lookupHepBook(isbn) {
+  const formatted = encodeURIComponent(formatIsbn13(isbn));
+  const target = `https://xuanshu.hep.com.cn/front/book/bookSearch?wd=${formatted}&searchType=book`;
+  const markdown = await fetchText(`https://r.jina.ai/http://r.jina.ai/http://${target}`, 12000);
+  return normalizeHepSearchBook(markdown, isbn);
+}
+
 async function lookupBook(isbn) {
   const cleaned = normalizeIsbn(isbn);
   const cached = state.books[cleaned];
   if (cached?.title) return cached;
+  const known = normalizeKnownBook(KNOWN_BOOKS[cleaned], cleaned);
+  if (known) return known;
 
   const lookups = [
-    async () => normalizeGoogleBook(await fetchJson(`https://www.googleapis.com/books/v1/volumes?q=isbn:${cleaned}`), cleaned),
+    async () => lookupHepBook(cleaned),
     async () => normalizeOpenBdBook(await fetchJson(`https://api.openbd.jp/v1/get?isbn=${cleaned}`), cleaned),
     async () =>
       normalizeOpenLibraryBook(
@@ -414,6 +487,7 @@ async function lookupBook(isbn) {
         ),
         cleaned,
       ),
+    async () => normalizeGoogleBook(await fetchJson(`https://www.googleapis.com/books/v1/volumes?q=isbn:${cleaned}`), cleaned),
   ];
 
   for (const lookup of lookups) {
