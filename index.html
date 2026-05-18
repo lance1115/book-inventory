@@ -14,9 +14,11 @@
     <link rel="manifest" href="./manifest.json?v=20260518" />
     <link rel="icon" href="./icons/icon-192.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="./icons/icon-192.svg" />
-    <link rel="stylesheet" href="./styles.css?v=20260518e" />
+    <link rel="stylesheet" href="./styles.css?v=20260518f" />
+    <script defer src="./supabase-config.js?v=20260518f"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script defer src="./vendor/zxing-browser.min.js?v=20260518"></script>
-    <script defer src="./app-20260518e.js"></script>
+    <script defer src="./app-20260518f.js"></script>
   </head>
   <body>
     <main class="app-shell">
@@ -24,10 +26,33 @@
         <div>
           <p class="eyebrow">本机图书库存</p>
           <h1>书库扫码库存</h1>
-          <p class="header-note">Safari 摄像头直扫 ISBN，数据只保存在这台手机。</p>
+          <p class="header-note" id="storageNote">Safari 摄像头直扫 ISBN，默认本机保存；登录后云端同步。</p>
         </div>
         <button class="ghost-button" id="installButton" hidden type="button">添加到主屏幕</button>
       </header>
+
+      <section class="panel cloud-panel" aria-labelledby="cloudTitle">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">云端同步</p>
+            <h2 id="cloudTitle">Supabase 账号</h2>
+          </div>
+          <span class="pill warning" id="cloudState">本机模式</span>
+        </div>
+        <form id="authForm" class="auth-form">
+          <input id="authEmail" autocomplete="email" inputmode="email" placeholder="邮箱" type="email" />
+          <input id="authPassword" autocomplete="current-password" placeholder="密码" type="password" />
+          <button class="primary-button" id="signInButton" type="submit">登录/注册</button>
+          <button class="secondary-button" id="signOutButton" hidden type="button">退出</button>
+        </form>
+        <div class="cloud-actions">
+          <button class="secondary-button" id="syncButton" type="button">同步云端</button>
+          <button class="secondary-button" id="pushLocalButton" type="button">上传本机库存</button>
+        </div>
+        <div class="status-card compact" id="cloudStatus" role="status">
+          未配置 Supabase 时会继续使用本机存储。
+        </div>
+      </section>
 
       <section class="stats-grid" aria-label="库存概览">
         <article class="stat-card">

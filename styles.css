@@ -271,11 +271,22 @@ button {
 }
 
 .scanner-actions,
-.search-box {
+.search-box,
+.auth-form,
+.cloud-actions {
   display: grid;
   grid-template-columns: 1fr auto auto;
   gap: 10px;
   margin-top: 12px;
+}
+
+.auth-form {
+  grid-template-columns: 1fr 1fr auto auto;
+  align-items: center;
+}
+
+.cloud-actions {
+  grid-template-columns: 1fr 1fr;
 }
 
 .primary-button,
@@ -358,6 +369,12 @@ button:disabled {
 .status-card.error {
   color: #7f2a1e;
   background: rgba(183, 75, 56, 0.12);
+}
+
+.status-card.compact {
+  margin-top: 10px;
+  padding: 10px 12px;
+  font-size: 0.8rem;
 }
 
 .manual-form {
@@ -529,7 +546,18 @@ input:focus {
     grid-template-columns: 1fr 1fr;
   }
 
+  .auth-form,
+  .cloud-actions {
+    grid-template-columns: 1fr;
+  }
+
   #torchButton {
     grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 620px) {
+  .auth-form {
+    grid-template-columns: 1fr;
   }
 }
