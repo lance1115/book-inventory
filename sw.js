@@ -1,9 +1,9 @@
-const CACHE_NAME = "book-inventory-cache-v4";
+const CACHE_NAME = "book-inventory-cache-v5";
 const APP_FILES = [
   "./",
   "./index.html",
-  "./styles.css?v=20260518d",
-  "./app-20260518d.js",
+  "./styles.css?v=20260518e",
+  "./app-20260518e.js",
   "./manifest.json?v=20260518",
   "./vendor/zxing-browser.min.js?v=20260518",
   "./icons/icon-192.svg",
