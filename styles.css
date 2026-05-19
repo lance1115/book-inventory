@@ -371,10 +371,10 @@ button {
 
 .signed-in-actions .secondary-button,
 .signed-in-actions .ghost-button {
-  min-height: 36px;
-  padding: 0 12px;
-  border-radius: 9px;
-  font-size: 0.78rem;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 11px;
+  font-size: 0.86rem;
 }
 
 .option-toggle {
@@ -454,27 +454,6 @@ button {
 button:disabled {
   cursor: not-allowed;
   opacity: 0.46;
-}
-
-.photo-upload {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 52px;
-  margin-top: 10px;
-  border: 1px dashed rgba(17, 106, 112, 0.36);
-  border-radius: 14px;
-  color: #315f68;
-  background: rgba(223, 241, 245, 0.44);
-  font-weight: 800;
-}
-
-.photo-upload input {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  opacity: 0;
-  pointer-events: none;
 }
 
 .status-card {
