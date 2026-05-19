@@ -136,6 +136,16 @@ button {
   border-radius: var(--radius);
 }
 
+.scanner-panel {
+  position: sticky;
+  top: calc(8px + env(safe-area-inset-top));
+  z-index: 20;
+  max-height: calc(100dvh - env(safe-area-inset-top) - 16px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
 .panel-heading {
   display: flex;
   align-items: flex-start;
