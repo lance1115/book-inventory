@@ -14,11 +14,11 @@
     <link rel="manifest" href="./manifest.json?v=20260518" />
     <link rel="icon" href="./icons/icon-192.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="./icons/icon-192.svg" />
-    <link rel="stylesheet" href="./styles.css?v=20260519h" />
+    <link rel="stylesheet" href="./styles.css?v=20260519i" />
     <script defer src="./supabase-config.js?v=20260519a"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script defer src="./vendor/zxing-browser.min.js?v=20260518"></script>
-    <script defer src="./app-20260519h.js"></script>
+    <script defer src="./app-20260519i.js"></script>
   </head>
   <body>
     <main class="app-shell">
@@ -89,21 +89,16 @@
             <span></span>
           </div>
           <div class="empty-camera" id="cameraHint">
-            <strong>点击“开始扫码”</strong>
+            <strong>正在准备扫码</strong>
             <span>把书背面 978 / 979 条形码横向放进框线</span>
           </div>
         </div>
 
         <div class="scanner-actions">
-          <button class="primary-button" id="startScan" type="button">开始扫码</button>
+          <button class="primary-button" id="startScan" type="button">重新启动扫码</button>
           <button class="secondary-button" id="stopScan" disabled type="button">停止</button>
           <button class="secondary-button" id="torchButton" hidden type="button">补光灯</button>
         </div>
-
-        <label class="option-toggle">
-          <input id="continuousScan" type="checkbox" />
-          <span>连续扫码模式</span>
-        </label>
 
         <label class="photo-upload">
           <span>拍照/相册辅助识别</span>
@@ -111,7 +106,7 @@
         </label>
 
         <div class="status-card" id="scanStatus" role="status">
-          摄像头扫码只负责识别书目；确认入库或出库后才会改写云端库存。
+          打开页面会自动启动摄像头；识别到书目后暂停，确认入库或出库后继续扫码。
         </div>
 
         <div class="pending-card" id="pendingActionCard" hidden>
@@ -145,10 +140,10 @@
             <input id="manualTitleInput" autocomplete="off" enterkeyhint="next" placeholder="自动查询失败时填写" />
           </label>
           <label>
-            <span>数量变化</span>
-            <input id="manualDelta" inputmode="numeric" type="number" value="1" enterkeyhint="done" />
+            <span>数量变化（可选）</span>
+            <input id="manualDelta" inputmode="numeric" type="number" value="0" enterkeyhint="done" />
           </label>
-          <button class="primary-button" type="submit">保存库存</button>
+          <button class="primary-button" type="submit">保存资料</button>
         </form>
         <div class="detail-grid">
           <label>
