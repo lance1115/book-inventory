@@ -553,7 +553,21 @@ button:disabled {
 
 .shelf-books {
   display: grid;
+  max-height: clamp(220px, 32dvh, 360px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding-right: 2px;
   gap: 8px;
+  scrollbar-width: thin;
+}
+
+.shelf-books:empty {
+  max-height: none;
+}
+
+.shelf-books .empty-state {
+  min-height: 96px;
 }
 
 .shelf-book-item {
@@ -926,5 +940,9 @@ select:focus {
   .quantity-control {
     width: 100%;
     grid-template-columns: 1fr 1fr 1fr minmax(70px, 1.2fr);
+  }
+
+  .shelf-books {
+    max-height: 260px;
   }
 }
