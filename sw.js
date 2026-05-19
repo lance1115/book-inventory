@@ -1,10 +1,10 @@
-const CACHE_NAME = "book-inventory-cache-v24";
+const CACHE_NAME = "book-inventory-cache-v25";
 const APP_FILES = [
   "./",
   "./index.html",
-  "./styles.css?v=20260520a",
+  "./styles.css?v=20260520b",
   "./supabase-config.js?v=20260519a",
-  "./app-20260520a.js",
+  "./app-20260520b.js",
   "./manifest.json?v=20260518",
   "./vendor/zxing-browser.min.js?v=20260518",
   "./icons/icon-192.svg",

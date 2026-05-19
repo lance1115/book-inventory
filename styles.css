@@ -551,15 +551,20 @@ button:disabled {
   gap: 10px;
 }
 
-.shelf-books {
+.shelf-books,
+.inventory-list,
+.history-list {
   display: grid;
-  max-height: clamp(220px, 32dvh, 360px);
   overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
   padding-right: 2px;
   gap: 8px;
   scrollbar-width: thin;
+}
+
+.shelf-books {
+  max-height: clamp(220px, 32dvh, 360px);
 }
 
 .shelf-books:empty {
@@ -700,11 +705,21 @@ select:focus {
   text-align: right;
 }
 
-.inventory-list,
-.history-list {
-  display: grid;
+.inventory-list {
+  max-height: clamp(320px, 48dvh, 620px);
   gap: 10px;
   margin-top: 12px;
+}
+
+.history-list {
+  max-height: clamp(220px, 34dvh, 420px);
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.inventory-list:empty,
+.history-list:empty {
+  max-height: none;
 }
 
 .book-row,
@@ -943,6 +958,14 @@ select:focus {
   }
 
   .shelf-books {
+    max-height: 260px;
+  }
+
+  .inventory-list {
+    max-height: 420px;
+  }
+
+  .history-list {
     max-height: 260px;
   }
 }
