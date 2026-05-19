@@ -384,6 +384,12 @@ button {
   box-shadow: inset 0 0 0 1px rgba(17, 106, 112, 0.08);
 }
 
+.danger-button {
+  color: #9b352b;
+  background: rgba(196, 79, 67, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(196, 79, 67, 0.12);
+}
+
 .ghost-button {
   min-height: 38px;
   padding: 0 14px;
@@ -467,7 +473,8 @@ button:disabled {
 }
 
 .detail-grid,
-.admin-grid {
+.admin-grid,
+.cloud-admin-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
@@ -477,6 +484,10 @@ button:disabled {
 .admin-grid {
   grid-template-columns: 1fr 1fr auto auto;
   align-items: end;
+}
+
+.cloud-admin-grid {
+  grid-template-columns: 1fr;
 }
 
 .detail-grid label,
@@ -762,7 +773,8 @@ select:focus {
   }
 
   .detail-grid,
-  .admin-grid {
+  .admin-grid,
+  .cloud-admin-grid {
     grid-template-columns: 1fr;
   }
 }
