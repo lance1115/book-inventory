@@ -65,12 +65,17 @@ button {
 
 .app-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: 16px;
+  gap: 14px;
   min-height: 112px;
-  padding: 10px 2px 18px;
+  padding: 8px 2px;
   color: var(--ink);
+}
+
+.brand-copy {
+  min-width: 0;
+  flex: 1;
 }
 
 .app-header h1 {
@@ -87,6 +92,21 @@ button {
   color: #5c717b;
   font-size: 0.84rem;
   line-height: 1.45;
+}
+
+.header-actions {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.brand-logo {
+  width: clamp(84px, 16vw, 96px);
+  aspect-ratio: 1;
+  object-fit: contain;
+  display: block;
 }
 
 .eyebrow {
@@ -1029,10 +1049,15 @@ select:focus {
 
   .app-header {
     min-height: 104px;
+    gap: 10px;
   }
 
   .app-header h1 {
     font-size: 1.62rem;
+  }
+
+  .brand-logo {
+    width: clamp(76px, 22vw, 88px);
   }
 
   .scanner-actions,
