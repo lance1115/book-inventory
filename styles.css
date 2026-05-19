@@ -493,6 +493,119 @@ button:disabled {
   gap: 10px;
 }
 
+.pending-shelf-tools,
+.shelf-form {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 10px;
+}
+
+.shelf-form {
+  grid-template-columns: 1fr auto;
+  margin-top: 10px;
+}
+
+.shelf-list {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  overflow-x: auto;
+  padding-bottom: 3px;
+  scrollbar-width: none;
+}
+
+.shelf-list::-webkit-scrollbar {
+  display: none;
+}
+
+.shelf-chip {
+  flex: 0 0 auto;
+  min-height: 42px;
+  max-width: 220px;
+  padding: 0 14px;
+  border: 1px solid rgba(17, 106, 112, 0.18);
+  border-radius: 999px;
+  color: #1e6370;
+  background: #f4fafb;
+  font-size: 0.82rem;
+  font-weight: 900;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.shelf-chip.active {
+  color: #ffffff;
+  background: linear-gradient(180deg, #15818a, #0d6971);
+  box-shadow: 0 10px 22px rgba(17, 106, 112, 0.2);
+}
+
+.shelf-detail {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid rgba(17, 106, 112, 0.14);
+  border-radius: 14px;
+  background: #f8fbfc;
+}
+
+.shelf-detail span,
+.shelf-detail small {
+  display: block;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.shelf-detail strong {
+  display: block;
+  margin: 3px 0;
+  color: #102f3a;
+  font-size: 1.06rem;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.shelf-books {
+  display: grid;
+  gap: 8px;
+}
+
+.shelf-book-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: var(--shadow-soft);
+}
+
+.shelf-book-item > div {
+  min-width: 0;
+}
+
+.shelf-book-item strong {
+  display: -webkit-box;
+  overflow: hidden;
+  color: #102f3a;
+  font-size: 0.96rem;
+  line-height: 1.28;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.shelf-book-item span {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 0.76rem;
+  line-height: 1.35;
+}
+
 .manual-form {
   display: grid;
   gap: 10px;
@@ -790,6 +903,8 @@ select:focus {
   .cloud-actions,
   .mode-switch,
   .pending-actions,
+  .pending-shelf-tools,
+  .shelf-form,
   .detail-grid,
   .admin-grid,
   .audit-summary {
@@ -837,7 +952,9 @@ select:focus {
 
   .scanner-actions,
   .search-box,
-  .pending-actions {
+  .pending-actions,
+  .pending-shelf-tools,
+  .shelf-form {
     grid-template-columns: 1fr;
   }
 

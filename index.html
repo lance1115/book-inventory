@@ -14,11 +14,11 @@
     <link rel="manifest" href="./manifest.json?v=20260518" />
     <link rel="icon" href="./icons/icon-192.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="./icons/icon-192.svg" />
-    <link rel="stylesheet" href="./styles.css?v=20260519i" />
+    <link rel="stylesheet" href="./styles.css?v=20260519j" />
     <script defer src="./supabase-config.js?v=20260519a"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script defer src="./vendor/zxing-browser.min.js?v=20260518"></script>
-    <script defer src="./app-20260519i.js"></script>
+    <script defer src="./app-20260519j.js"></script>
   </head>
   <body>
     <main class="app-shell">
@@ -114,12 +114,41 @@
             <span>待确认书目</span>
             <strong id="pendingBookTitle">-</strong>
             <small id="pendingBookMeta">-</small>
+            <small id="pendingShelfMeta">-</small>
+          </div>
+          <div class="pending-shelf-tools">
+            <select id="pendingShelfSelect" aria-label="选择书架"></select>
+            <button class="secondary-button" id="assignShelfButton" type="button">放入书架</button>
+            <button class="ghost-button" id="removeShelfButton" type="button">移出书架</button>
           </div>
           <div class="pending-actions">
             <button class="primary-button" id="confirmInButton" type="button">确认入库 +1</button>
             <button class="secondary-button" id="confirmOutButton" type="button">确认出库 -1</button>
             <button class="ghost-button" id="cancelPendingButton" type="button">取消</button>
           </div>
+        </div>
+      </section>
+
+      <section class="panel shelf-panel" aria-labelledby="shelfTitle">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">书架</p>
+            <h2 id="shelfTitle">书架管理</h2>
+          </div>
+          <button class="ghost-button" id="clearActiveShelfButton" type="button">全部书架</button>
+        </div>
+        <form id="shelfForm" class="shelf-form">
+          <input id="shelfNameInput" autocomplete="off" placeholder="新书架名称，例如 A-03" />
+          <button class="primary-button" type="submit">新增书架</button>
+        </form>
+        <div class="shelf-list" id="shelfList"></div>
+        <div class="shelf-detail" id="shelfDetail">
+          <div>
+            <span>当前书架</span>
+            <strong id="activeShelfName">未选择</strong>
+            <small id="activeShelfMeta">选择一个书架后可查看其中图书。</small>
+          </div>
+          <div class="shelf-books" id="shelfBooksList"></div>
         </div>
       </section>
 
