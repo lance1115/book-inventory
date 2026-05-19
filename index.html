@@ -14,11 +14,11 @@
     <link rel="manifest" href="./manifest.json?v=20260518" />
     <link rel="icon" href="./icons/icon-192.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="./icons/icon-192.svg" />
-    <link rel="stylesheet" href="./styles.css?v=20260519m" />
+    <link rel="stylesheet" href="./styles.css?v=20260519n" />
     <script defer src="./supabase-config.js?v=20260519a"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script defer src="./vendor/zxing-browser.min.js?v=20260518"></script>
-    <script defer src="./app-20260519m.js"></script>
+    <script defer src="./app-20260519n.js"></script>
   </head>
   <body>
     <main class="app-shell">
@@ -251,7 +251,22 @@
 
         <div class="search-box">
           <input id="searchInput" autocomplete="off" placeholder="输入书名或 ISBN 查询库存" />
+          <select id="inventoryFilter" aria-label="库存筛选">
+            <option value="all">全部记录</option>
+            <option value="stocked">有库存</option>
+            <option value="low">低库存</option>
+            <option value="no-shelf">未上架</option>
+            <option value="on-shelf">当前书架</option>
+          </select>
+          <select id="inventorySort" aria-label="库存排序">
+            <option value="updated">最近更新</option>
+            <option value="title">按书名</option>
+            <option value="count-desc">库存从高到低</option>
+            <option value="count-asc">库存从低到高</option>
+            <option value="shelf">按书架</option>
+          </select>
         </div>
+        <div class="inventory-summary" id="inventorySummary">显示 0 种 / 0 本</div>
 
         <div class="inventory-list" id="inventoryList" aria-live="polite"></div>
       </section>

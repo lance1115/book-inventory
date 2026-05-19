@@ -463,8 +463,12 @@ button:disabled {
 
 .pending-actions {
   display: grid;
-  grid-template-columns: 1fr 1fr auto;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.2fr) auto;
   gap: 10px;
+}
+
+.pending-actions .primary-button {
+  min-height: 54px;
 }
 
 .pending-shelf-tools,
@@ -671,7 +675,15 @@ select:focus {
 }
 
 .search-box {
-  grid-template-columns: 1fr auto;
+  grid-template-columns: minmax(0, 1.4fr) minmax(126px, 0.7fr) minmax(148px, 0.8fr);
+}
+
+.inventory-summary {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-align: right;
 }
 
 .inventory-list,
@@ -758,6 +770,10 @@ select:focus {
   background: #177c84;
 }
 
+.small-button:disabled {
+  opacity: 0.46;
+}
+
 .small-button.minus {
   background: #8aa3ab;
 }
@@ -842,6 +858,7 @@ select:focus {
   .pending-shelf-tools,
   .shelf-form,
   .shelf-actions,
+  .search-box,
   .detail-grid,
   .admin-grid {
     grid-template-columns: 1fr;
