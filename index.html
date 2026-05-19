@@ -14,11 +14,11 @@
     <link rel="manifest" href="./manifest.json?v=20260518" />
     <link rel="icon" href="./icons/icon-192.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="./icons/icon-192.svg" />
-    <link rel="stylesheet" href="./styles.css?v=20260520i" />
+    <link rel="stylesheet" href="./styles.css?v=20260520j" />
     <script defer src="./supabase-config.js?v=20260519a"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script defer src="./vendor/zxing-browser.min.js?v=20260518"></script>
-    <script defer src="./app-20260520i.js"></script>
+    <script defer src="./app-20260520j.js"></script>
   </head>
   <body>
     <main class="app-shell">
@@ -207,40 +207,12 @@
         </div>
       </section>
 
-      <section class="panel admin-panel" aria-labelledby="adminTitle">
-        <div class="panel-heading">
-          <div>
-            <p class="eyebrow">管理</p>
-            <h2 id="adminTitle">导入导出 / 权限</h2>
-          </div>
-        </div>
-        <div class="admin-grid">
-          <label>
-            <span>当前角色</span>
-            <select id="roleSelect">
-              <option value="admin">管理员</option>
-              <option value="staff">员工</option>
-            </select>
-          </label>
-          <label class="file-button">
-            <span>导入 CSV</span>
-            <input id="importInput" accept=".csv,text/csv,text/plain" type="file" />
-          </label>
-          <button id="exportButton" class="secondary-button" type="button">导出库存</button>
-        </div>
-        <div class="permission-danger-zone">
-          <span>权限危险操作</span>
-          <button id="clearCloudInventoryButton" class="small-danger-button" type="button">清空云端库存</button>
-        </div>
-      </section>
-
       <section class="panel inventory-panel" aria-labelledby="inventoryTitle">
         <div class="panel-heading">
           <div>
             <p class="eyebrow">查询</p>
             <h2 id="inventoryTitle">库存检索</h2>
           </div>
-          <button class="small-danger-button" id="clearAll" type="button">清空云端</button>
         </div>
 
         <div class="search-box">
@@ -273,6 +245,33 @@
           </div>
         </div>
         <div class="history-list" id="historyList"></div>
+      </section>
+
+      <section class="panel admin-panel" aria-labelledby="adminTitle">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">管理</p>
+            <h2 id="adminTitle">导入导出 / 权限</h2>
+          </div>
+        </div>
+        <div class="admin-grid">
+          <label>
+            <span>当前角色</span>
+            <select id="roleSelect">
+              <option value="admin">管理员</option>
+              <option value="staff">员工</option>
+            </select>
+          </label>
+          <label class="file-button">
+            <span>导入 CSV</span>
+            <input id="importInput" accept=".csv,text/csv,text/plain" type="file" />
+          </label>
+          <button id="exportButton" class="secondary-button" type="button">导出库存</button>
+        </div>
+        <div class="permission-danger-zone">
+          <span>权限危险操作</span>
+          <button id="clearCloudInventoryButton" class="small-danger-button" type="button">清空云端库存</button>
+        </div>
       </section>
     </main>
 
