@@ -14,11 +14,11 @@
     <link rel="manifest" href="./manifest.json?v=20260518" />
     <link rel="icon" href="./icons/icon-192.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="./icons/icon-192.svg" />
-    <link rel="stylesheet" href="./styles.css?v=20260519k" />
+    <link rel="stylesheet" href="./styles.css?v=20260519l" />
     <script defer src="./supabase-config.js?v=20260519a"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script defer src="./vendor/zxing-browser.min.js?v=20260518"></script>
-    <script defer src="./app-20260519k.js"></script>
+    <script defer src="./app-20260519l.js"></script>
   </head>
   <body>
     <main class="app-shell">
@@ -147,6 +147,10 @@
             <span>当前书架</span>
             <strong id="activeShelfName">未选择</strong>
             <small id="activeShelfMeta">选择一个书架后可查看其中图书。</small>
+          </div>
+          <div class="shelf-actions">
+            <button class="secondary-button" id="renameShelfButton" type="button">重命名</button>
+            <button class="ghost-button danger" id="deleteShelfButton" type="button">删除书架</button>
           </div>
           <div class="shelf-books" id="shelfBooksList"></div>
         </div>
