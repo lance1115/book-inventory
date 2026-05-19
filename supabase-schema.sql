@@ -39,6 +39,19 @@ create table if not exists public.lookup_cache (
 create index if not exists inventory_user_updated_idx on public.inventory (user_id, updated_at desc);
 create index if not exists stock_movements_user_created_idx on public.stock_movements (user_id, created_at desc);
 
+alter table public.books add column if not exists cover_url text not null default '';
+alter table public.books add column if not exists price text not null default '';
+alter table public.books add column if not exists published_date text not null default '';
+alter table public.books add column if not exists edition text not null default '';
+alter table public.inventory add column if not exists category text not null default '';
+alter table public.inventory add column if not exists shelf text not null default '';
+alter table public.inventory add column if not exists location text not null default '';
+alter table public.inventory add column if not exists note text not null default '';
+alter table public.lookup_cache add column if not exists cover_url text not null default '';
+alter table public.lookup_cache add column if not exists price text not null default '';
+alter table public.lookup_cache add column if not exists published_date text not null default '';
+alter table public.lookup_cache add column if not exists edition text not null default '';
+
 alter table public.books enable row level security;
 alter table public.inventory enable row level security;
 alter table public.stock_movements enable row level security;

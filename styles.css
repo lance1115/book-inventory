@@ -34,7 +34,8 @@ body {
 }
 
 button,
-input {
+input,
+select {
   font: inherit;
 }
 
@@ -89,7 +90,7 @@ button {
 
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 10px;
   margin-bottom: 14px;
 }
@@ -273,7 +274,8 @@ button {
 .scanner-actions,
 .search-box,
 .auth-form,
-.cloud-actions {
+.cloud-actions,
+.admin-grid {
   display: grid;
   grid-template-columns: 1fr auto auto;
   gap: 10px;
@@ -287,6 +289,22 @@ button {
 
 .cloud-actions {
   grid-template-columns: 1fr 1fr;
+}
+
+.option-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  margin-top: 10px;
+  color: var(--moss);
+  font-weight: 800;
+}
+
+.option-toggle input {
+  width: 22px;
+  min-height: 22px;
+  accent-color: var(--forest);
 }
 
 .primary-button,
@@ -393,7 +411,95 @@ button:disabled {
   font-weight: 700;
 }
 
-input {
+.detail-grid,
+.admin-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.admin-grid {
+  grid-template-columns: 1fr 1fr auto auto;
+  align-items: end;
+}
+
+.detail-grid label,
+.admin-grid label {
+  display: grid;
+  gap: 6px;
+}
+
+.detail-grid span,
+.admin-grid span {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.file-button {
+  min-height: 50px;
+  padding: 0 14px;
+  border: 1px dashed rgba(15, 45, 37, 0.34);
+  border-radius: 12px;
+  color: var(--forest);
+  background: rgba(15, 45, 37, 0.04);
+  font-weight: 800;
+  place-content: center;
+}
+
+.file-button input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.audit-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.audit-summary span {
+  display: grid;
+  min-height: 42px;
+  place-items: center;
+  border-radius: 12px;
+  color: var(--forest);
+  background: rgba(15, 45, 37, 0.08);
+  font-weight: 900;
+}
+
+.audit-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.audit-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.68);
+}
+
+.audit-item strong {
+  display: block;
+  margin-bottom: 3px;
+}
+
+.audit-item span {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+input,
+select {
   width: 100%;
   min-height: 50px;
   border: 1px solid var(--line);
@@ -404,7 +510,8 @@ input {
   outline: none;
 }
 
-input:focus {
+input:focus,
+select:focus {
   border-color: rgba(67, 107, 85, 0.7);
   box-shadow: 0 0 0 4px rgba(185, 220, 199, 0.38);
 }
@@ -433,6 +540,19 @@ input:focus {
   background: rgba(255, 255, 255, 0.72);
 }
 
+.book-cover {
+  width: 44px;
+  height: 58px;
+  flex: 0 0 auto;
+  border-radius: 8px;
+  object-fit: cover;
+  background: rgba(15, 45, 37, 0.1);
+}
+
+.book-cover[hidden] {
+  display: none;
+}
+
 .book-title {
   display: -webkit-box;
   overflow: hidden;
@@ -443,6 +563,7 @@ input:focus {
 }
 
 .book-meta,
+.book-place,
 .history-item span,
 .empty-state {
   color: var(--muted);
@@ -450,9 +571,14 @@ input:focus {
   line-height: 1.45;
 }
 
+.book-place {
+  display: block;
+  margin-top: 3px;
+}
+
 .quantity-control {
   display: grid;
-  grid-template-columns: 40px minmax(38px, auto) 40px;
+  grid-template-columns: 40px minmax(38px, auto) 40px 40px;
   align-items: center;
   gap: 5px;
   flex: 0 0 auto;
@@ -474,6 +600,10 @@ input:focus {
 
 .small-button.minus {
   background: rgba(20, 36, 30, 0.38);
+}
+
+.small-button.edit {
+  background: rgba(226, 163, 62, 0.88);
 }
 
 .history-item {
@@ -547,7 +677,10 @@ input:focus {
   }
 
   .auth-form,
-  .cloud-actions {
+  .cloud-actions,
+  .detail-grid,
+  .admin-grid,
+  .audit-summary {
     grid-template-columns: 1fr;
   }
 
@@ -558,6 +691,15 @@ input:focus {
 
 @media (max-width: 620px) {
   .auth-form {
+    grid-template-columns: 1fr;
+  }
+
+  .mode-switch {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .detail-grid,
+  .admin-grid {
     grid-template-columns: 1fr;
   }
 }
