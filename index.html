@@ -14,19 +14,19 @@
     <link rel="manifest" href="./manifest.json?v=20260518" />
     <link rel="icon" href="./icons/icon-192.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="./icons/icon-192.svg" />
-    <link rel="stylesheet" href="./styles.css?v=20260519g" />
+    <link rel="stylesheet" href="./styles.css?v=20260519h" />
     <script defer src="./supabase-config.js?v=20260519a"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script defer src="./vendor/zxing-browser.min.js?v=20260518"></script>
-    <script defer src="./app-20260519g.js"></script>
+    <script defer src="./app-20260519h.js"></script>
   </head>
   <body>
     <main class="app-shell">
       <header class="app-header">
         <div>
-          <p class="eyebrow">本机图书库存</p>
+          <p class="eyebrow">云端图书库存</p>
           <h1>书库扫码库存</h1>
-          <p class="header-note" id="storageNote">Safari 摄像头直扫 ISBN，默认本机保存；登录后云端同步。</p>
+          <p class="header-note" id="storageNote">扫码识别书目后，确认入库或出库，库存立即写入云端。</p>
         </div>
         <button class="ghost-button" id="installButton" hidden type="button">添加到主屏幕</button>
       </header>
@@ -37,7 +37,7 @@
             <p class="eyebrow">云端同步</p>
             <h2 id="cloudTitle">Supabase 账号</h2>
           </div>
-          <span class="pill warning" id="cloudState">本机模式</span>
+          <span class="pill warning" id="cloudState">待登录</span>
         </div>
         <form id="authForm" class="auth-form">
           <input id="authEmail" autocomplete="email" inputmode="email" placeholder="邮箱" type="email" />
@@ -52,11 +52,10 @@
           <button class="secondary-button" id="signOutButton" type="button">退出</button>
         </div>
         <div class="cloud-actions">
-          <button class="secondary-button" id="syncButton" type="button">同步云端</button>
-          <button class="secondary-button" id="pushLocalButton" type="button">上传本机库存</button>
+          <button class="secondary-button" id="syncButton" type="button">刷新云端库存</button>
         </div>
         <div class="status-card compact" id="cloudStatus" role="status">
-          未配置 Supabase 时会继续使用本机存储。
+          登录后只读取和写入云端库存。
         </div>
       </section>
 
@@ -82,13 +81,6 @@
             <h2 id="scannerTitle">扫码处理</h2>
           </div>
           <span class="pill" id="secureState">检查环境</span>
-        </div>
-
-        <div class="mode-switch" role="group" aria-label="扫码模式">
-          <button class="mode-button active" data-mode="in" type="button">入库 +1</button>
-          <button class="mode-button" data-mode="out" type="button">出库 -1</button>
-          <button class="mode-button" data-mode="lookup" type="button">只查询</button>
-          <button class="mode-button" data-mode="audit" type="button">盘点</button>
         </div>
 
         <div class="scan-stage">
@@ -119,7 +111,20 @@
         </label>
 
         <div class="status-card" id="scanStatus" role="status">
-          摄像头扫码是主流程；拍照识别用于条码反光、过小或距离太远时辅助。
+          摄像头扫码只负责识别书目；确认入库或出库后才会改写云端库存。
+        </div>
+
+        <div class="pending-card" id="pendingActionCard" hidden>
+          <div>
+            <span>待确认书目</span>
+            <strong id="pendingBookTitle">-</strong>
+            <small id="pendingBookMeta">-</small>
+          </div>
+          <div class="pending-actions">
+            <button class="primary-button" id="confirmInButton" type="button">确认入库 +1</button>
+            <button class="secondary-button" id="confirmOutButton" type="button">确认出库 -1</button>
+            <button class="ghost-button" id="cancelPendingButton" type="button">取消</button>
+          </div>
         </div>
       </section>
 
@@ -230,7 +235,7 @@
             <p class="eyebrow">查询</p>
             <h2 id="inventoryTitle">库存检索</h2>
           </div>
-          <button class="ghost-button danger" id="clearAll" type="button">清空</button>
+          <button class="ghost-button danger" id="clearAll" type="button">清空云端</button>
         </div>
 
         <div class="search-box">

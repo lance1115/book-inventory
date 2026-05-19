@@ -456,6 +456,43 @@ button:disabled {
   font-size: 0.8rem;
 }
 
+.pending-card {
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+  padding: 14px;
+  border: 1px solid rgba(17, 106, 112, 0.18);
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: var(--shadow-soft);
+}
+
+.pending-card[hidden] {
+  display: none;
+}
+
+.pending-card span,
+.pending-card small {
+  display: block;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.pending-card strong {
+  display: block;
+  margin: 4px 0;
+  color: #102f3a;
+  font-size: 1.04rem;
+  line-height: 1.35;
+}
+
+.pending-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 10px;
+}
+
 .manual-form {
   display: grid;
   gap: 10px;
@@ -752,6 +789,7 @@ select:focus {
   .auth-form,
   .cloud-actions,
   .mode-switch,
+  .pending-actions,
   .detail-grid,
   .admin-grid,
   .audit-summary {
@@ -798,7 +836,8 @@ select:focus {
   }
 
   .scanner-actions,
-  .search-box {
+  .search-box,
+  .pending-actions {
     grid-template-columns: 1fr;
   }
 
