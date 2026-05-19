@@ -44,6 +44,19 @@ alter table public.inventory enable row level security;
 alter table public.stock_movements enable row level security;
 alter table public.lookup_cache enable row level security;
 
+drop policy if exists "Books are readable by signed-in users" on public.books;
+drop policy if exists "Signed-in users can insert books" on public.books;
+drop policy if exists "Signed-in users can update books" on public.books;
+drop policy if exists "Users can read their own inventory" on public.inventory;
+drop policy if exists "Users can insert their own inventory" on public.inventory;
+drop policy if exists "Users can update their own inventory" on public.inventory;
+drop policy if exists "Users can delete their own inventory" on public.inventory;
+drop policy if exists "Users can read their own stock movements" on public.stock_movements;
+drop policy if exists "Users can insert their own stock movements" on public.stock_movements;
+drop policy if exists "Lookup cache is readable by signed-in users" on public.lookup_cache;
+drop policy if exists "Signed-in users can write lookup cache" on public.lookup_cache;
+drop policy if exists "Signed-in users can update lookup cache" on public.lookup_cache;
+
 create policy "Books are readable by signed-in users"
   on public.books for select
   to authenticated
