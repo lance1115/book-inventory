@@ -212,14 +212,18 @@ button {
 }
 
 .scan-stage video {
+  position: relative;
+  z-index: 1;
   width: 100%;
   height: 100%;
   object-fit: cover;
   transform: translateZ(0);
+  background: transparent;
 }
 
 .scan-reticle {
   position: absolute;
+  z-index: 3;
   left: 8%;
   right: 8%;
   top: 33%;
@@ -227,7 +231,7 @@ button {
   border: 2px solid rgba(17, 106, 112, 0.82);
   border-radius: 14px;
   box-shadow:
-    0 0 0 999px rgba(246, 250, 252, 0.16),
+    0 0 0 999px rgba(246, 250, 252, 0.06),
     0 12px 28px rgba(13, 66, 78, 0.12);
   pointer-events: none;
 }
@@ -264,6 +268,7 @@ button {
 
 .empty-camera {
   position: absolute;
+  z-index: 2;
   inset: 0;
   display: grid;
   place-content: center;
@@ -274,6 +279,10 @@ button {
   background:
     linear-gradient(160deg, rgba(255, 255, 255, 0.72), rgba(217, 238, 242, 0.86)),
     #eef8fa;
+}
+
+.scan-stage.is-scanning .empty-camera {
+  display: none;
 }
 
 .empty-camera strong {
