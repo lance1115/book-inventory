@@ -1,10 +1,10 @@
-const CACHE_NAME = "book-inventory-cache-v9";
+const CACHE_NAME = "book-inventory-cache-v10";
 const APP_FILES = [
   "./",
   "./index.html",
-  "./styles.css?v=20260519b",
+  "./styles.css?v=20260519c",
   "./supabase-config.js?v=20260519a",
-  "./app-20260519b.js",
+  "./app-20260519c.js",
   "./manifest.json?v=20260518",
   "./vendor/zxing-browser.min.js?v=20260518",
   "./icons/icon-192.svg",
@@ -29,9 +29,14 @@ self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
 
   event.respondWith(
-    caches.match(event.request).then((cached) => {
-      if (cached) return cached;
-      return fetch(event.request).catch(() => caches.match("./index.html"));
-    }),
+    fetch(event.request)
+      .then((response) => {
+        const copy = response.clone();
+        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+        return response;
+      })
+      .catch(() => {
+        return caches.match(event.request).then((cached) => cached || caches.match("./index.html"));
+      }),
   );
 });
