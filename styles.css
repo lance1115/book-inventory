@@ -283,8 +283,39 @@ button {
 }
 
 .auth-form {
-  grid-template-columns: 1fr 1fr auto auto;
+  grid-template-columns: 1fr 1fr auto;
   align-items: center;
+}
+
+.signed-in-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid rgba(15, 45, 37, 0.14);
+  border-radius: 14px;
+  background: rgba(15, 45, 37, 0.06);
+}
+
+.signed-in-card[hidden] {
+  display: none;
+}
+
+.signed-in-card span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.signed-in-card strong {
+  display: block;
+  margin-top: 3px;
+  overflow-wrap: anywhere;
+  color: var(--forest);
+  font-size: 0.94rem;
 }
 
 .cloud-actions {

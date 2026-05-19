@@ -14,11 +14,11 @@
     <link rel="manifest" href="./manifest.json?v=20260518" />
     <link rel="icon" href="./icons/icon-192.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="./icons/icon-192.svg" />
-    <link rel="stylesheet" href="./styles.css?v=20260519c" />
+    <link rel="stylesheet" href="./styles.css?v=20260519d" />
     <script defer src="./supabase-config.js?v=20260519a"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script defer src="./vendor/zxing-browser.min.js?v=20260518"></script>
-    <script defer src="./app-20260519c.js"></script>
+    <script defer src="./app-20260519d.js"></script>
   </head>
   <body>
     <main class="app-shell">
@@ -43,8 +43,14 @@
           <input id="authEmail" autocomplete="email" inputmode="email" placeholder="邮箱" type="email" />
           <input id="authPassword" autocomplete="current-password" placeholder="密码" type="password" />
           <button class="primary-button" id="signInButton" type="submit">登录/注册</button>
-          <button class="secondary-button" id="signOutButton" hidden type="button">退出</button>
         </form>
+        <div class="signed-in-card" id="signedInCard" hidden>
+          <div>
+            <span>当前账号</span>
+            <strong id="signedInEmail">Supabase</strong>
+          </div>
+          <button class="secondary-button" id="signOutButton" type="button">退出</button>
+        </div>
         <div class="cloud-actions">
           <button class="secondary-button" id="syncButton" type="button">同步云端</button>
           <button class="secondary-button" id="pushLocalButton" type="button">上传本机库存</button>
