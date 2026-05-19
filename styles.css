@@ -536,8 +536,7 @@ button:disabled {
 }
 
 .shelf-list {
-  display: flex;
-  gap: 8px;
+  display: block;
   margin-top: 12px;
   overflow-x: auto;
   padding-bottom: 3px;
@@ -546,6 +545,43 @@ button:disabled {
 
 .shelf-list::-webkit-scrollbar {
   display: none;
+}
+
+.shelf-lanes {
+  display: grid;
+  gap: 8px;
+  width: max-content;
+  min-width: 100%;
+}
+
+.shelf-lane {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: max-content;
+}
+
+.shelf-lane-label,
+.shelf-lane-empty {
+  flex: 0 0 auto;
+  display: inline-grid;
+  place-items: center;
+  min-height: 34px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 900;
+}
+
+.shelf-lane-label {
+  width: 34px;
+  color: #ffffff;
+  background: #8aa3ab;
+}
+
+.shelf-lane-empty {
+  padding: 0 12px;
+  color: var(--muted);
+  background: #eef5f7;
 }
 
 .shelf-chip {
