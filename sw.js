@@ -1,13 +1,13 @@
-const CACHE_NAME = "book-inventory-cache-v38";
+const CACHE_NAME = "book-inventory-cache-v39";
 const APP_FILES = [
   "./",
   "./index.html",
-  "./styles.css?v=20260520o",
+  "./styles.css?v=20260520p",
   "./supabase-config.js?v=20260519a",
-  "./app-20260520o.js",
+  "./app-20260520p.js",
   "./manifest.json?v=20260518",
   "./vendor/zxing-browser.min.js?v=20260518",
-  "./icons/yixiang-logo.png?v=20260520o",
+  "./icons/yixiang-logo.png?v=20260520p",
   "./icons/icon-192.svg",
   "./icons/icon-512.svg",
 ];

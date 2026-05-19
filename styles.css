@@ -69,7 +69,7 @@ button {
   justify-content: space-between;
   gap: 14px;
   min-height: 112px;
-  padding: 8px 2px;
+  padding: 4px 2px;
   color: var(--ink);
 }
 
@@ -87,11 +87,15 @@ button {
 }
 
 .header-note {
-  max-width: 23rem;
+  max-width: 16rem;
   margin: 6px 0 0;
   color: #5c717b;
   font-size: 0.84rem;
-  line-height: 1.45;
+  line-height: 1.35;
+}
+
+.header-note span {
+  display: block;
 }
 
 .header-actions {
@@ -103,7 +107,7 @@ button {
 }
 
 .brand-logo {
-  width: clamp(84px, 16vw, 96px);
+  width: clamp(96px, 18vw, 104px);
   aspect-ratio: 1;
   object-fit: contain;
   display: block;
@@ -1057,7 +1061,7 @@ select:focus {
   }
 
   .brand-logo {
-    width: clamp(76px, 22vw, 88px);
+    width: clamp(86px, 25vw, 96px);
   }
 
   .scanner-actions,
