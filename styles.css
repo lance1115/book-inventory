@@ -137,6 +137,23 @@ button {
   border-radius: var(--radius);
 }
 
+.cloud-panel {
+  padding: 14px;
+}
+
+.cloud-panel.is-signed-in {
+  padding: 12px 14px;
+  box-shadow: var(--shadow-soft);
+}
+
+.cloud-panel.is-signed-in .panel-heading {
+  margin-bottom: 8px;
+}
+
+.cloud-panel.is-signed-in h2 {
+  font-size: 1.02rem;
+}
+
 .panel-heading {
   display: flex;
   align-items: flex-start;
@@ -295,7 +312,6 @@ button {
 .scanner-actions,
 .search-box,
 .auth-form,
-.cloud-actions,
 .admin-grid {
   display: grid;
   grid-template-columns: 1fr auto auto;
@@ -304,8 +320,12 @@ button {
 }
 
 .auth-form {
-  grid-template-columns: 1fr 1fr auto;
-  align-items: center;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: end;
+}
+
+.auth-form .primary-button {
+  grid-column: 1 / -1;
 }
 
 .signed-in-card {
@@ -313,10 +333,10 @@ button {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin-top: 12px;
-  padding: 12px;
+  margin-top: 8px;
+  padding: 10px 12px;
   border: 1px solid rgba(17, 106, 112, 0.16);
-  border-radius: 14px;
+  border-radius: 12px;
   background: rgba(223, 241, 245, 0.58);
 }
 
@@ -339,8 +359,18 @@ button {
   font-size: 0.94rem;
 }
 
-.cloud-actions {
-  grid-template-columns: 1fr 1fr;
+.signed-in-actions {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 8px;
+}
+
+.signed-in-actions .secondary-button,
+.signed-in-actions .ghost-button {
+  min-height: 36px;
+  padding: 0 12px;
+  border-radius: 9px;
+  font-size: 0.78rem;
 }
 
 .option-toggle {
@@ -942,8 +972,6 @@ select:focus {
     grid-template-columns: 1fr 1fr;
   }
 
-  .auth-form,
-  .cloud-actions,
   .pending-actions,
   .pending-shelf-tools,
   .shelf-form,
@@ -959,10 +987,6 @@ select:focus {
 }
 
 @media (max-width: 620px) {
-  .auth-form {
-    grid-template-columns: 1fr;
-  }
-
   .detail-grid,
   .admin-grid,
   .cloud-admin-grid {
