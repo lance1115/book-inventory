@@ -686,6 +686,22 @@ button:disabled {
   grid-template-columns: 1fr;
 }
 
+.permission-danger-zone {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 18px;
+  padding-top: 12px;
+  border-top: 1px dashed rgba(196, 79, 67, 0.22);
+}
+
+.permission-danger-zone > span {
+  color: rgba(143, 47, 37, 0.76);
+  font-size: 0.74rem;
+  font-weight: 800;
+}
+
 .detail-grid label,
 .admin-grid label {
   display: grid;
