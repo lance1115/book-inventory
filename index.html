@@ -14,11 +14,11 @@
     <link rel="manifest" href="./manifest.json?v=20260518" />
     <link rel="icon" href="./icons/icon-192.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="./icons/icon-192.svg" />
-    <link rel="stylesheet" href="./styles.css?v=20260519j" />
+    <link rel="stylesheet" href="./styles.css?v=20260519k" />
     <script defer src="./supabase-config.js?v=20260519a"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script defer src="./vendor/zxing-browser.min.js?v=20260518"></script>
-    <script defer src="./app-20260519j.js"></script>
+    <script defer src="./app-20260519k.js"></script>
   </head>
   <body>
     <main class="app-shell">
@@ -230,27 +230,10 @@
             <input id="importInput" accept=".csv,text/csv,text/plain" type="file" />
           </label>
           <button id="exportButton" class="secondary-button" type="button">导出库存</button>
-          <button id="exportAuditButton" class="secondary-button" type="button">导出盘点</button>
         </div>
         <div class="cloud-admin-grid">
           <button id="clearCloudInventoryButton" class="secondary-button danger-button" type="button">清空云端库存</button>
         </div>
-      </section>
-
-      <section class="panel audit-panel" aria-labelledby="auditTitle">
-        <div class="panel-heading">
-          <div>
-            <p class="eyebrow">盘点</p>
-            <h2 id="auditTitle">库存盘点</h2>
-          </div>
-          <button class="secondary-button" id="resetAuditButton" type="button">开始新盘点</button>
-        </div>
-        <div class="audit-summary" id="auditSummary">
-          <span>已扫 0 本</span>
-          <span>缺失 0 本</span>
-          <span>多出 0 本</span>
-        </div>
-        <div class="audit-list" id="auditList"></div>
       </section>
 
       <section class="panel inventory-panel" aria-labelledby="inventoryTitle">

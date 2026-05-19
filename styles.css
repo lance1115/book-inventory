@@ -168,32 +168,6 @@ button {
   background: var(--red);
 }
 
-.mode-switch {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  padding: 6px;
-  border: 1px solid var(--line);
-  border-radius: 13px;
-  background: #eef5f6;
-}
-
-.mode-button {
-  min-height: 42px;
-  border: 0;
-  border-radius: 10px;
-  color: #54717c;
-  background: transparent;
-  font-size: 0.8rem;
-  font-weight: 800;
-}
-
-.mode-button.active {
-  color: var(--paper-strong);
-  background: var(--forest);
-  box-shadow: 0 9px 24px rgba(17, 106, 112, 0.22);
-}
-
 .scan-stage {
   position: relative;
   display: grid;
@@ -672,49 +646,6 @@ button:disabled {
   pointer-events: none;
 }
 
-.audit-summary {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-}
-
-.audit-summary span {
-  display: grid;
-  min-height: 42px;
-  place-items: center;
-  border-radius: 12px;
-  color: var(--forest);
-  background: #e5f2f5;
-  font-weight: 900;
-}
-
-.audit-list {
-  display: grid;
-  gap: 8px;
-  margin-top: 10px;
-}
-
-.audit-item {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 10px 12px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: #ffffff;
-  box-shadow: var(--shadow-soft);
-}
-
-.audit-item strong {
-  display: block;
-  margin-bottom: 3px;
-}
-
-.audit-item span {
-  color: var(--muted);
-  font-size: 0.78rem;
-}
-
 input,
 select {
   width: 100%;
@@ -901,13 +832,11 @@ select:focus {
 
   .auth-form,
   .cloud-actions,
-  .mode-switch,
   .pending-actions,
   .pending-shelf-tools,
   .shelf-form,
   .detail-grid,
-  .admin-grid,
-  .audit-summary {
+  .admin-grid {
     grid-template-columns: 1fr;
   }
 
@@ -919,10 +848,6 @@ select:focus {
 @media (max-width: 620px) {
   .auth-form {
     grid-template-columns: 1fr;
-  }
-
-  .mode-switch {
-    grid-template-columns: repeat(2, 1fr);
   }
 
   .detail-grid,
