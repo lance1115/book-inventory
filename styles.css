@@ -750,7 +750,7 @@ select:focus {
 
 .quantity-control {
   display: grid;
-  grid-template-columns: 40px minmax(38px, auto) 40px 40px;
+  grid-template-columns: 40px minmax(38px, auto) 40px minmax(58px, auto);
   align-items: center;
   gap: 5px;
   flex: 0 0 auto;
@@ -764,10 +764,16 @@ select:focus {
 }
 
 .small-button {
-  width: 40px;
+  min-width: 40px;
   min-height: 40px;
+  padding: 0 10px;
   color: var(--paper-strong);
   background: #177c84;
+}
+
+.small-button.text-button {
+  width: auto;
+  min-width: 86px;
 }
 
 .small-button:disabled {
@@ -919,6 +925,6 @@ select:focus {
 
   .quantity-control {
     width: 100%;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr minmax(70px, 1.2fr);
   }
 }
